@@ -1,0 +1,19 @@
+* {
+    box-sizing: border-box;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+button {
+    width: 48px;
+    height: 48px;
+    background-color: bisque;
+    border-radius: 50%;
+    border: 2px solid brown;
+}
