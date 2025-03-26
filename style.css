@@ -2,7 +2,8 @@
     box-sizing: border-box;
 }
 
-.mainContainer {
+.mainContainer,
+.calculatorContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;

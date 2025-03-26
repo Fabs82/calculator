@@ -1,6 +1,12 @@
-let n1 = 2;
-let n2 = 3;
-let operator = "+";
+let n1 = "";
+let n2 = "";
+let operator = "";
+let displayValue = "";
+
+const calculatorContainer = document.querySelector(".calculatorContainer");
+const numbersContainer = document.querySelector(".numbersContainer");
+const operatorsContainer = document.querySelector(".operatorsContainer");
+let display = document.querySelector(".display");
 
 
 function add(n1, n2) {
@@ -45,5 +51,46 @@ function operate(n1, n2, operator) {
     };
 };
 
-console.log(operate(n1, n2, operator));
+//console.log(operate(n1, n2, operator));
 
+
+calculatorContainer.addEventListener("click", e => {
+    if (e.target.matches(".btnN") && operator !== "") {
+        n2 += parseInt(e.target.textContent);
+        displayValue = n1 + operator + n2;
+        updateDisplay();
+    }
+
+    else if (e.target.matches(".btnO")) {
+        operator = e.target.textContent;
+        displayValue = n1 + operator;
+        updateDisplay();
+    }
+
+    else {
+        n1 += parseInt(e.target.textContent);
+        displayValue = n1;
+        updateDisplay();
+    };
+
+});
+
+
+function updateDisplay() { display.textContent = displayValue }
+
+
+function clearDisplay(type, CssSelector, callbackF) {
+    calculatorContainer.addEventListener(type, e => {
+        if (e.target.matches(CssSelector)) {
+            callbackF()
+        }
+    });
+};
+
+
+clearDisplay("click", ".clear", () => {
+    n1 = "";
+    n2 = "";
+    operator = "";
+    display.textContent = "0.0"
+});
