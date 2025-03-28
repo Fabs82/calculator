@@ -1,6 +1,7 @@
-let n1 = "4";
-let n2 = "3";
-let operator = "+";
+let n1 = "";
+let n2 = "";
+let operator = "";
+let result = "";
 let displayValue = "";
 
 const calculatorContainer = document.querySelector(".calculatorContainer");
@@ -26,7 +27,10 @@ function multiply(n1, n2) {
 
 
 function divide(n1, n2) {
-    return n1 / n2;
+    if (n2 === 0) {
+        return "SNARK SNARK. NO DIVISION BY 0"
+    }
+    else return n1 / n2;
 };
 
 
@@ -67,7 +71,7 @@ clearDisplay("click", ".clear", () => {
     n1 = "";
     n2 = "";
     operator = "";
-    displayValue = "0.0";
+    displayValue = "";
     display.textContent = displayValue;
 });
 
@@ -82,11 +86,53 @@ function giveResult(type, CssSelector, callbackF) {
 
 giveResult("click", ".result", () => {
     if (n1 !== "" && n2 !== "" & operator !== "") {
-        let result = operate(parseInt(n1), operator, parseInt(n2));
+        result = operate(parseFloat(n1), operator, parseFloat(n2)).toFixed(2);
         displayValue = result;
         display.textContent = displayValue;
+        console.log(result)
     };
 });
 
 // Creare una funzione getNumbers
+function getNumbers(type, CssSelector) {
+    numbersContainer.addEventListener(type, e => {
+        if (e.target.matches(CssSelector) && operator === "") {
+            n1 += e.target.textContent;
+            displayValue = n1;
+            display.textContent = displayValue;
+            console.log(n1);
+        }
+        else if (e.target.matches(CssSelector) && operator !== "") {
+            n2 += e.target.textContent;
+            displayValue += n2;
+            display.textContent = displayValue;
+            console.log(n2);
+        }
+    });
+};
+
+getNumbers("click", ".btnN");
+
 // Creare una funzione getOperators
+function getOperators(type, CssSelector) {
+    operatorsContainer.addEventListener(type, e => {
+        if (e.target.matches(CssSelector) && n1 !== "") {
+            operator = e.target.textContent;
+            displayValue += operator;
+            display.textContent = displayValue;
+            console.log(operator);
+        }
+        if (e.target.matches(CssSelector) && result !== "") {
+            n1 = result;
+            n2 = "";
+            operator = e.target.textContent;
+            displayValue = n1 + operator;
+            display.textContent = displayValue;
+            console.log(operator);
+        };
+    });
+
+
+};
+
+getOperators("click", ".btnO");
