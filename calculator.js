@@ -68,7 +68,7 @@ function clearDisplay() {
     display.textContent = displayValue;
 };
 
-clearButton.addEventListener("click", clearDisplay)
+
 
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
 function giveResult(type, CssSelector, callbackF) {
@@ -78,20 +78,6 @@ function giveResult(type, CssSelector, callbackF) {
         };
     });
 };
-
-giveResult("click", ".result", () => {
-    if (n1 !== "" && n2 !== "" & operator !== "") {
-        result = operate(parseFloat(n1), operator, parseFloat(n2));
-        if (result % 1 !== 0) {
-            displayValue = result.toFixed(2);
-        } else {
-            displayValue = result;
-        };
-        display.textContent = displayValue;
-        operator = "";
-        console.log(result)
-    };
-});
 
 
 // if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione n1 = e.target.textContent displayValue = n1; display.textContent = displayValue;
@@ -122,7 +108,6 @@ function getNumbers(type, CssSelector) {
     });
 };
 
-getNumbers("click", ".btnN");
 
 // Creare una funzione getOperators
 function getOperators(type, CssSelector) {
@@ -130,6 +115,7 @@ function getOperators(type, CssSelector) {
         if (e.target.matches(CssSelector)) {
             if (result !== "") {
                 n1 = result;
+                result = ""
                 n2 = "";
                 operator = e.target.textContent;
                 displayValue = n1 + operator;
@@ -147,3 +133,18 @@ function getOperators(type, CssSelector) {
 };
 
 getOperators("click", ".btnO");
+getNumbers("click", ".btnN");
+giveResult("click", ".result", () => {
+    if (n1 !== "" && n2 !== "" & operator !== "") {
+        result = operate(parseFloat(n1), operator, parseFloat(n2));
+        if (result % 1 !== 0) {
+            displayValue = result.toFixed(2);
+        } else {
+            displayValue = result;
+        };
+        display.textContent = displayValue;
+        operator = "";
+        console.log(result)
+    };
+});
+clearButton.addEventListener("click", clearDisplay)
