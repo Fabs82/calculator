@@ -119,13 +119,14 @@ function getNumbers(type, CssSelector) {
                 console.log(n2);
             };
         }
-        else { // It works but the code below is already in clearDisplay function that needs to be refactored
+        else { // It works but the code below is already in clearDisplay function. refactor?
             n1 = ""
             n2 = "";
             operator = "";
             displayValue = "";
             result = "";
             n1 += e.target.textContent;
+            console.log(n1)
             displayValue = n1;
             display.textContent = displayValue;
         };
