@@ -105,18 +105,31 @@ giveResult("click", ".result", () => {
 // if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione n1 = e.target.textContent displayValue = n1; display.textContent = displayValue;
 function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
-        if (e.target.matches(CssSelector) && operator === "") {
+        if (result === "") {
+            if (e.target.matches(CssSelector) && operator === "") {
+                n1 += e.target.textContent;
+                displayValue = n1;
+                display.textContent = displayValue;
+                console.log(n1);
+            }
+            else if (e.target.matches(CssSelector) && operator !== "") {
+                n2 += e.target.textContent;
+                displayValue = n2;
+                display.textContent = displayValue;
+                console.log(n2);
+            };
+        }
+        else { // It works but the code below is already in clearDisplay function that needs to be refactored
+            n1 = ""
+            n2 = "";
+            operator = "";
+            displayValue = "";
+            result = "";
             n1 += e.target.textContent;
             displayValue = n1;
             display.textContent = displayValue;
-            console.log(n1);
-        }
-        else if (e.target.matches(CssSelector) && operator !== "") {
-            n2 += e.target.textContent;
-            displayValue = n2;
-            display.textContent = displayValue;
-            console.log(n2);
         };
+
     });
 };
 
