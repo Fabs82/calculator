@@ -8,6 +8,7 @@ const calculatorContainer = document.querySelector(".calculatorContainer");
 const numbersContainer = document.querySelector(".numbersContainer");
 const operatorsContainer = document.querySelector(".operatorsContainer");
 const otherBtnContainer = document.querySelector(".otherBtnContainer");
+const clearButton = document.querySelector(".clear");
 let display = document.querySelector(".display");
 
 
@@ -56,25 +57,18 @@ function operate(n1, operator, n2) {
     };
 };
 
-//console.log(operate(n1, n2, operator));
 
 // Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
-function clearDisplay(type, CssSelector, callbackF) {
-    otherBtnContainer.addEventListener(type, e => {
-        if (e.target.matches(CssSelector)) {
-            callbackF();
-        };
-    });
-};
-
-clearDisplay("click", ".clear", () => {
+function clearDisplay() {
     n1 = "";
     n2 = "";
     operator = "";
-    displayValue = "";
     result = "";
+    displayValue = "0";
     display.textContent = displayValue;
-});
+};
+
+clearButton.addEventListener("click", clearDisplay)
 
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
 function giveResult(type, CssSelector, callbackF) {
@@ -100,8 +94,6 @@ giveResult("click", ".result", () => {
 });
 
 
-
-// Creare una funzione getNumbers
 // if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione n1 = e.target.textContent displayValue = n1; display.textContent = displayValue;
 function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
@@ -119,12 +111,8 @@ function getNumbers(type, CssSelector) {
                 console.log(n2);
             };
         }
-        else { // It works but the code below is already in clearDisplay function. refactor?
-            n1 = ""
-            n2 = "";
-            operator = "";
-            displayValue = "";
-            result = "";
+        else { // Funziona ma il codice sotto é ripetitivo. refactor?
+            clearDisplay()
             n1 += e.target.textContent;
             console.log(n1)
             displayValue = n1;
