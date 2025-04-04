@@ -17,16 +17,13 @@ function add(n1, n2) {
     return n1 + n2;
 };
 
-
 function subtract(n1, n2) {
     return n1 - n2;
 };
 
-
 function multiply(n1, n2) {
     return n1 * n2;
 };
-
 
 function divide(n1, n2) {
     if (n2 === 0) {
@@ -34,7 +31,6 @@ function divide(n1, n2) {
     }
     else return n1 / n2;
 };
-
 
 function exponential(n1, n2) {
     return n1 ** n2;
@@ -74,9 +70,13 @@ function clearDisplay() {
 function giveResult() {
     if (n1 !== "" && n2 !== "" & operator !== "") {
         result = operate(parseFloat(n1), operator, parseFloat(n2));
-        if (result % 1 !== 0) {
+        if (typeof result === "string") {
+            displayValue = result;
+        }
+        else if (result % 1 !== 0) {
             displayValue = result.toFixed(2);
-        } else {
+        }
+        else {
             displayValue = result;
         };
         display.textContent = displayValue;
@@ -86,7 +86,7 @@ function giveResult() {
 };
 
 
-// if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione
+// if result === "" chiede n1, operator e n2 // else clearDisplay  e poi inizia una nuova operazione
 function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
         if (result === "") {
@@ -120,11 +120,20 @@ function getOperators(type, CssSelector) {
         if (e.target.matches(CssSelector)) {
             if (result !== "") {
                 n1 = result;
-                result = "";
                 n2 = "";
                 operator = e.target.textContent;
                 displayValue = operator;
                 display.textContent = displayValue;
+                result = "";
+                console.log(operator);
+            }
+            else if (n2 !== "") {
+                giveResult();
+                n1 = result;
+                n2 = "";
+                operator = e.target.textContent;
+                displayValue = operator;
+                result = "";
                 console.log(operator);
             }
             else if (n1 !== "") {
