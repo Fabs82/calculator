@@ -8,6 +8,7 @@ const calculatorContainer = document.querySelector(".calculatorContainer");
 const numbersContainer = document.querySelector(".numbersContainer");
 const operatorsContainer = document.querySelector(".operatorsContainer");
 const otherBtnContainer = document.querySelector(".otherBtnContainer");
+const resultButton = document.querySelector(".result");
 const clearButton = document.querySelector(".clear");
 let display = document.querySelector(".display");
 
@@ -69,18 +70,23 @@ function clearDisplay() {
 };
 
 
-
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
-function giveResult(type, CssSelector, callbackF) {
-    otherBtnContainer.addEventListener(type, e => {
-        if (e.target.matches(CssSelector)) {
-            callbackF();
+function giveResult() {
+    if (n1 !== "" && n2 !== "" & operator !== "") {
+        result = operate(parseFloat(n1), operator, parseFloat(n2));
+        if (result % 1 !== 0) {
+            displayValue = result.toFixed(2);
+        } else {
+            displayValue = result;
         };
-    });
+        display.textContent = displayValue;
+        operator = "";
+        console.log(result);
+    };
 };
 
 
-// if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione n1 = e.target.textContent displayValue = n1; display.textContent = displayValue;
+// if result === "" passa al codice sotto // else clearDisplay poi inizia una nuova operazione
 function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
         if (result === "") {
@@ -97,32 +103,31 @@ function getNumbers(type, CssSelector) {
                 console.log(n2);
             };
         }
-        else { // Funziona ma il codice sotto é ripetitivo. refactor?
+        else {
             clearDisplay()
             n1 += e.target.textContent;
             console.log(n1)
             displayValue = n1;
             display.textContent = displayValue;
         };
-
     });
 };
 
 
-// Creare una funzione getOperators
+// BUG! Quando ho giá un'operazione e concateno un operator non dá il risultato ma concatena n2+il nuovo numero
 function getOperators(type, CssSelector) {
     operatorsContainer.addEventListener(type, e => {
         if (e.target.matches(CssSelector)) {
             if (result !== "") {
                 n1 = result;
-                result = ""
+                result = "";
                 n2 = "";
                 operator = e.target.textContent;
-                displayValue = n1 + operator;
+                displayValue = operator;
                 display.textContent = displayValue;
                 console.log(operator);
             }
-            else if (e.target.matches(CssSelector) && n1 !== "") {
+            else if (n1 !== "") {
                 operator = e.target.textContent;
                 displayValue = operator;
                 display.textContent = displayValue;
@@ -134,17 +139,5 @@ function getOperators(type, CssSelector) {
 
 getOperators("click", ".btnO");
 getNumbers("click", ".btnN");
-giveResult("click", ".result", () => {
-    if (n1 !== "" && n2 !== "" & operator !== "") {
-        result = operate(parseFloat(n1), operator, parseFloat(n2));
-        if (result % 1 !== 0) {
-            displayValue = result.toFixed(2);
-        } else {
-            displayValue = result;
-        };
-        display.textContent = displayValue;
-        operator = "";
-        console.log(result)
-    };
-});
 clearButton.addEventListener("click", clearDisplay)
+resultButton.addEventListener("click", giveResult)
