@@ -1,5 +1,5 @@
-let n1 = "";
-let n2 = "";
+let firstNumber = "";
+let secondNumber = "";
 let operator = "";
 let result = "";
 let displayValue = "";
@@ -13,42 +13,42 @@ const clearButton = document.querySelector(".clear");
 let display = document.querySelector(".display");
 
 
-function add(n1, n2) {
-    return n1 + n2;
+function add(firstNumber, secondNumber) {
+    return firstNumber + secondNumber;
 };
 
-function subtract(n1, n2) {
-    return n1 - n2;
+function subtract(firstNumber, secondNumber) {
+    return firstNumber - secondNumber;
 };
 
-function multiply(n1, n2) {
-    return n1 * n2;
+function multiply(firstNumber, secondNumber) {
+    return firstNumber * secondNumber;
 };
 
-function divide(n1, n2) {
-    if (n2 === 0) {
+function divide(firstNumber, secondNumber) {
+    if (secondNumber === 0) {
         return "SNARK SNARK. NO DIVISION BY 0"
     }
-    else return n1 / n2;
+    else return firstNumber / secondNumber;
 };
 
-function exponential(n1, n2) {
-    return n1 ** n2;
+function exponential(firstNumber, secondNumber) {
+    return firstNumber ** secondNumber;
 };
 
-function operate(n1, operator, n2) {
+function operate(firstNumber, operator, secondNumber) {
     // Use switch instead of if/else
     switch (operator) {
         case "+":
-            return (add(n1, n2));
+            return (add(firstNumber, secondNumber));
         case "-":
-            return (subtract(n1, n2));
+            return (subtract(firstNumber, secondNumber));
         case "*":
-            return (multiply(n1, n2));
+            return (multiply(firstNumber, secondNumber));
         case "/":
-            return (divide(n1, n2));
+            return (divide(firstNumber, secondNumber));
         case "**":
-            return exponential(n1, n2);
+            return exponential(firstNumber, secondNumber);
         default:
             return ("error");
     };
@@ -57,8 +57,8 @@ function operate(n1, operator, n2) {
 
 // Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
 function clearDisplay() {
-    n1 = "";
-    n2 = "";
+    firstNumber = "";
+    secondNumber = "";
     operator = "";
     result = "";
     displayValue = "0";
@@ -68,8 +68,8 @@ function clearDisplay() {
 
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
 function giveResult() {
-    if (n1 !== "" && n2 !== "" & operator !== "") {
-        result = operate(parseFloat(n1), operator, parseFloat(n2));
+    if (firstNumber !== "" && secondNumber !== "" & operator !== "") {
+        result = operate(parseFloat(firstNumber), operator, parseFloat(secondNumber));
         if (typeof result === "string") {
             displayValue = result;
         }
@@ -85,58 +85,57 @@ function giveResult() {
     };
 };
 
+function prepareNewCalculation(e) {
+    firstNumber = result;
+    secondNumber = "";
+    operator = e.target.textContent;
+    displayValue = operator;
+    result = "";
+};
 
 // if result === "" chiede n1, operator e n2 // else clearDisplay  e poi inizia una nuova operazione
 function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
         if (result === "") {
             if (e.target.matches(CssSelector) && operator === "") {
-                n1 += e.target.textContent;
-                displayValue = n1;
+                firstNumber += e.target.textContent;
+                displayValue = firstNumber;
                 display.textContent = displayValue;
-                console.log(n1);
+                console.log(firstNumber);
             }
             else if (e.target.matches(CssSelector) && operator !== "") {
-                n2 += e.target.textContent;
-                displayValue = n2;
+                secondNumber += e.target.textContent;
+                displayValue = secondNumber;
                 display.textContent = displayValue;
-                console.log(n2);
+                console.log(secondNumber);
             };
         }
         else {
             clearDisplay()
-            n1 += e.target.textContent;
-            console.log(n1)
-            displayValue = n1;
+            firstNumber += e.target.textContent;
+            console.log(firstNumber)
+            displayValue = firstNumber;
             display.textContent = displayValue;
         };
     });
 };
 
 
-// BUG! Quando ho giá un'operazione e concateno un operator non dá il risultato ma concatena n2+il nuovo numero
+// Refactor: una parte di codice è ripetuta. Crea una funzione?
 function getOperators(type, CssSelector) {
     operatorsContainer.addEventListener(type, e => {
         if (e.target.matches(CssSelector)) {
             if (result !== "") {
-                n1 = result;
-                n2 = "";
-                operator = e.target.textContent;
-                displayValue = operator;
+                prepareNewCalculation(e);
                 display.textContent = displayValue;
-                result = "";
                 console.log(operator);
             }
-            else if (n2 !== "") {
+            else if (secondNumber !== "") {
                 giveResult();
-                n1 = result;
-                n2 = "";
-                operator = e.target.textContent;
-                displayValue = operator;
-                result = "";
+                prepareNewCalculation(e);
                 console.log(operator);
             }
-            else if (n1 !== "") {
+            else if (firstNumber !== "") {
                 operator = e.target.textContent;
                 displayValue = operator;
                 display.textContent = displayValue;
@@ -145,6 +144,7 @@ function getOperators(type, CssSelector) {
         };
     });
 };
+
 
 getOperators("click", ".btnO");
 getNumbers("click", ".btnN");
