@@ -61,7 +61,7 @@ function clearDisplay() {
     secondNumber = "";
     operator = "";
     result = "";
-    displayValue = "0";
+    displayValue = "0.0";
     display.textContent = displayValue;
 };
 
