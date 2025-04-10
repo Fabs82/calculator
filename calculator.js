@@ -10,6 +10,7 @@ const operatorsContainer = document.querySelector(".operatorsContainer");
 const otherBtnContainer = document.querySelector(".otherBtnContainer");
 const resultButton = document.querySelector(".result");
 const clearButton = document.querySelector(".clear");
+const backspaceButton = document.querySelector(".backspace");
 let display = document.querySelector(".display");
 
 
@@ -62,6 +63,20 @@ function enableFloatBtn() {
     document.getElementById("float").disabled = false;
 };
 
+// Function backspace --> quando viene clickato backspace l'ultimo input nel displaValue viene cancellato
+function backspace() {
+    if (secondNumber !== "") {
+        secondNumber = secondNumber.slice(0, secondNumber.length - 1);
+        display.textContent = secondNumber;
+    }
+    else if (operator === "") {
+        firstNumber = firstNumber.slice(0, firstNumber.length - 1);
+        display.textContent = firstNumber
+    };
+    enableFloatBtn()
+};
+
+
 // Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
 function clearDisplay() {
     firstNumber = "";
@@ -107,13 +122,21 @@ function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
         if (result === "") {
             if (e.target.matches(CssSelector) && operator === "") {
-                firstNumber += e.target.textContent;
+                if (e.target.textContent === ".") {
+                    firstNumber += 0 + e.target.textContent;
+                }
+                else firstNumber += e.target.textContent
+
                 displayValue = firstNumber;
                 display.textContent = displayValue;
                 console.log(firstNumber);
             }
             else if (e.target.matches(CssSelector) && operator !== "") {
-                secondNumber += e.target.textContent;
+                if (e.target.textContent === ".") {
+                    secondNumber += 0 + e.target.textContent;
+                }
+                else secondNumber += e.target.textContent
+
                 displayValue = secondNumber;
                 display.textContent = displayValue;
                 console.log(secondNumber);
@@ -121,7 +144,10 @@ function getNumbers(type, CssSelector) {
         }
         else {
             clearDisplay()
-            firstNumber += e.target.textContent;
+            if (e.target.textContent === ".") {
+                firstNumber += 0 + e.target.textContent;
+            }
+            else firstNumber += e.target.textContent
             console.log(firstNumber)
             displayValue = firstNumber;
             display.textContent = displayValue;
@@ -163,3 +189,4 @@ getOperators("click", ".btnO");
 getNumbers("click", ".btnN");
 clearButton.addEventListener("click", clearDisplay)
 resultButton.addEventListener("click", giveResult)
+backspaceButton.addEventListener("click", backspace)

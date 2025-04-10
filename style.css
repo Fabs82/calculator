@@ -37,6 +37,7 @@ button {
     background-color: #000814;
     border-radius: 5px;
     width: 80%;
+    min-height: 10%;
     padding: 10px 25px;
     text-align: right;
     font-size: 3rem;
