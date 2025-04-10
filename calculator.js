@@ -27,7 +27,7 @@ function multiply(firstNumber, secondNumber) {
 
 function divide(firstNumber, secondNumber) {
     if (secondNumber === 0) {
-        return "SNARK SNARK. NO DIVISION BY 0"
+        return "ERROR"
     }
     else return firstNumber / secondNumber;
 };
@@ -54,6 +54,13 @@ function operate(firstNumber, operator, secondNumber) {
     };
 };
 
+function disableFloatBtn() {
+    document.getElementById("float").disabled = true;
+};
+
+function enableFloatBtn() {
+    document.getElementById("float").disabled = false;
+};
 
 // Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
 function clearDisplay() {
@@ -61,8 +68,9 @@ function clearDisplay() {
     secondNumber = "";
     operator = "";
     result = "";
-    displayValue = "0.0";
+    displayValue = "0";
     display.textContent = displayValue;
+    enableFloatBtn()
 };
 
 
@@ -83,6 +91,7 @@ function giveResult() {
         operator = "";
         console.log(result);
     };
+    enableFloatBtn()
 };
 
 function prepareNewCalculation(e) {
@@ -117,6 +126,9 @@ function getNumbers(type, CssSelector) {
             displayValue = firstNumber;
             display.textContent = displayValue;
         };
+        if (displayValue.includes(".")) {
+            disableFloatBtn()
+        }
     });
 };
 
@@ -142,6 +154,7 @@ function getOperators(type, CssSelector) {
                 console.log(operator);
             };
         };
+        enableFloatBtn()
     });
 };
 
