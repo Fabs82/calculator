@@ -52,3 +52,7 @@ function prepareNewCalculation(operator) {
 };
 
 prepareNewCalculation(operator)
+
+calculatorContainer.addEventListener("keydown", (event) => {
+    console.log(event.key)
+})

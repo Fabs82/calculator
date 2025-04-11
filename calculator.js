@@ -38,7 +38,6 @@ function exponential(firstNumber, secondNumber) {
 };
 
 function operate(firstNumber, operator, secondNumber) {
-    // Use switch instead of if/else
     switch (operator) {
         case "+":
             return (add(firstNumber, secondNumber));
@@ -76,7 +75,6 @@ function backspace() {
     enableFloatBtn()
 };
 
-
 // Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
 function clearDisplay() {
     firstNumber = "";
@@ -87,7 +85,6 @@ function clearDisplay() {
     display.textContent = displayValue;
     enableFloatBtn()
 };
-
 
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
 function giveResult() {
@@ -126,7 +123,6 @@ function getNumbers(type, CssSelector) {
                     firstNumber += "0.";
                 }
                 else firstNumber += e.target.textContent;
-
                 displayValue = firstNumber;
                 display.textContent = displayValue;
                 console.log(firstNumber);
@@ -136,7 +132,6 @@ function getNumbers(type, CssSelector) {
                     secondNumber += "0.";
                 }
                 else secondNumber += e.target.textContent;
-
                 displayValue = secondNumber;
                 display.textContent = displayValue;
                 console.log(secondNumber);
@@ -159,7 +154,6 @@ function getNumbers(type, CssSelector) {
 };
 
 
-// Refactor: una parte di codice è ripetuta. Crea una funzione?
 function getOperators(type, CssSelector) {
     operatorsContainer.addEventListener(type, e => {
         if (e.target.matches(CssSelector)) {
@@ -184,9 +178,30 @@ function getOperators(type, CssSelector) {
     });
 };
 
+document.addEventListener("keydown", (event) => {
+    keyboard = event.key.toLowerCase()
+    switch (keyboard) {
+        case "c":
+            console.log(keyboard);
+            clearDisplay();
+            break;
+
+        case "backspace":
+            console.log(keyboard);
+            backspace();
+            break;
+        case "enter":
+            event.preventDefault();
+            giveResult();
+
+        default:
+            break;
+    };
+});
 
 getOperators("click", ".btnO");
 getNumbers("click", ".btnN");
 clearButton.addEventListener("click", clearDisplay)
 resultButton.addEventListener("click", giveResult)
 backspaceButton.addEventListener("click", backspace)
+
