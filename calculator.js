@@ -122,20 +122,20 @@ function getNumbers(type, CssSelector) {
     numbersContainer.addEventListener(type, e => {
         if (result === "") {
             if (e.target.matches(CssSelector) && operator === "") {
-                if (e.target.textContent === ".") {
-                    firstNumber += 0 + e.target.textContent;
+                if (e.target.textContent === "." && firstNumber === "") {
+                    firstNumber += "0.";
                 }
-                else firstNumber += e.target.textContent
+                else firstNumber += e.target.textContent;
 
                 displayValue = firstNumber;
                 display.textContent = displayValue;
                 console.log(firstNumber);
             }
             else if (e.target.matches(CssSelector) && operator !== "") {
-                if (e.target.textContent === ".") {
-                    secondNumber += 0 + e.target.textContent;
+                if (e.target.textContent === "." && secondNumber === "") {
+                    secondNumber += "0.";
                 }
-                else secondNumber += e.target.textContent
+                else secondNumber += e.target.textContent;
 
                 displayValue = secondNumber;
                 display.textContent = displayValue;
