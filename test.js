@@ -56,3 +56,12 @@ prepareNewCalculation(operator)
 calculatorContainer.addEventListener("keydown", (event) => {
     console.log(event.key)
 })
+
+
+function handleUserInput() {
+    input = input.key;
+    console.log(input)
+    return input
+};
+
+calculatorContainer.addEventListener("keydown", handleUserInput())

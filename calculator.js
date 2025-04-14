@@ -4,6 +4,7 @@ let operator = "";
 let result = "";
 let displayValue = "";
 
+
 const calculatorContainer = document.querySelector(".calculatorContainer");
 const numbersContainer = document.querySelector(".numbersContainer");
 const operatorsContainer = document.querySelector(".operatorsContainer");
@@ -126,6 +127,7 @@ function getNumbers(type, CssSelector) {
                 displayValue = firstNumber;
                 display.textContent = displayValue;
                 console.log(firstNumber);
+
             }
             else if (e.target.matches(CssSelector) && operator !== "") {
                 if (e.target.textContent === "." && secondNumber === "") {
@@ -147,6 +149,7 @@ function getNumbers(type, CssSelector) {
             displayValue = firstNumber;
             display.textContent = displayValue;
         };
+
         if (displayValue.includes(".")) {
             disableFloatBtn()
         }
@@ -187,21 +190,26 @@ document.addEventListener("keydown", (event) => {
             break;
 
         case "backspace":
-            console.log(keyboard);
-            backspace();
-            break;
+            if (result === "") {
+                console.log(keyboard);
+                backspace();
+                break;
+            };
+
         case "enter":
             event.preventDefault();
+            console.log(keyboard)
             giveResult();
+            break;
 
         default:
             break;
     };
 });
 
+
 getOperators("click", ".btnO");
 getNumbers("click", ".btnN");
-clearButton.addEventListener("click", clearDisplay)
-resultButton.addEventListener("click", giveResult)
-backspaceButton.addEventListener("click", backspace)
-
+clearButton.addEventListener("click", clearDisplay);
+resultButton.addEventListener("click", giveResult);
+backspaceButton.addEventListener("click", backspace);
