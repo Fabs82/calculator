@@ -1,3 +1,73 @@
+let firstNumber = "";
+let secondNumber = "";
+let operator = "";
+let result = "";
+let displayValue = "";
+const calculatorContainer = document.querySelector(".calculatorContainer");
+let display = document.querySelector(".display");
+
+function add(firstNumber, secondNumber) {
+    return firstNumber + secondNumber;
+};
+
+function subtract(firstNumber, secondNumber) {
+    return firstNumber - secondNumber;
+};
+
+function multiply(firstNumber, secondNumber) {
+    return firstNumber * secondNumber;
+};
+
+function divide(firstNumber, secondNumber) {
+    if (secondNumber === 0) {
+        return "error";
+    }
+    else return firstNumber / secondNumber;
+};
+
+function exponential(firstNumber, secondNumber) {
+    return firstNumber ** secondNumber;
+};
+
+function operate(firstNumber, operator, secondNumber) {
+    switch (operator) {
+        case "+":
+            return (add(firstNumber, secondNumber));
+        case "-":
+            return (subtract(firstNumber, secondNumber));
+        case "*":
+            return (multiply(firstNumber, secondNumber));
+        case "/":
+            return (divide(firstNumber, secondNumber));
+        case "**":
+            return exponential(firstNumber, secondNumber);
+        default:
+            return ("error");
+    };
+};
+
+function disableFloatBtn() {
+    document.getElementById("float").disabled = true;
+};
+
+function enableFloatBtn() {
+    document.getElementById("float").disabled = false;
+};
+
+// Function backspace --> quando viene clickato backspace l'ultimo input nel displaValue viene cancellato
+function backspace() {
+    if (secondNumber !== "") {
+        secondNumber = secondNumber.slice(0, secondNumber.length - 1);
+        display.textContent = secondNumber;
+    }
+    else if (operator === "") {
+        firstNumber = firstNumber.slice(0, firstNumber.length - 1);
+        display.textContent = firstNumber
+    };
+    enableFloatBtn();
+};
+
+// Resetta tutte le variabili
 function clearDisplay() {
     firstNumber = "";
     secondNumber = "";
@@ -5,63 +75,131 @@ function clearDisplay() {
     result = "";
     displayValue = "0";
     display.textContent = displayValue;
+    enableFloatBtn();
 };
 
-
+// Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
 function giveResult() {
     if (firstNumber !== "" && secondNumber !== "" & operator !== "") {
         result = operate(parseFloat(firstNumber), operator, parseFloat(secondNumber));
-        if (result % 1 !== 0) {
+        if (typeof result === "string") {
+            displayValue = result;
+        }
+        else if (result % 1 !== 0) {
             displayValue = result.toFixed(2);
-        } else {
+        }
+        else {
             displayValue = result;
         };
         display.textContent = displayValue;
         operator = "";
         console.log(result);
     };
+    enableFloatBtn();
 };
 
-
-function giveResult() {
-    if (firstNumber !== "" && secondNumber !== "" & operator !== "") {
-        result = operate(parseFloat(firstNumber), operator, parseFloat(secondNumber));
-        switch (result) {
-            case ("string"):
-                displayValue = result;
-                break;
-            case (result % 1 !== 0):
-                displayValue = result.toFixed(2);
-                break
-            default:
-                displayValue = result
-                break;
-        };
-        display.textContent = displayValue;
-        operator = "";
-        console.log(result);
-    };
-};
-
-function prepareNewCalculation(operator) {
+function prepareNewCalculation(newOperator) {
     firstNumber = result;
     secondNumber = "";
-    operator = e.target.textContent;
+    operator = newOperator;
     displayValue = operator;
     result = "";
 };
 
-prepareNewCalculation(operator)
-
-calculatorContainer.addEventListener("keydown", (event) => {
-    console.log(event.key)
-})
-
-
-function handleUserInput() {
-    input = input.key;
-    console.log(input)
-    return input
+function handleOperators(userInput) {
+    if (result !== "") {
+        prepareNewCalculation(userInput);
+        display.textContent = displayValue;
+        console.log(operator);
+    }
+    else if (secondNumber !== "") {
+        giveResult();
+        prepareNewCalculation(userInput);
+        console.log(operator);
+    }
+    else if (firstNumber !== "") {
+        operator = userInput;
+        displayValue = operator;
+        display.textContent = displayValue;
+        console.log(operator);
+    };
+    enableFloatBtn();
 };
 
-calculatorContainer.addEventListener("keydown", handleUserInput())
+function handleNumbers(userInput) {
+    if (result === "") {
+        if (operator === "") {
+            if (userInput === "." && firstNumber === "") {
+                firstNumber += "0.";
+            }
+            else firstNumber += userInput;
+            displayValue = firstNumber;
+            display.textContent = displayValue;
+            console.log(firstNumber);
+        }
+        else if (operator !== "") {
+            if (userInput === "." && secondNumber === "") {
+                secondNumber += "0.";
+            }
+            else secondNumber += userInput;
+            displayValue = secondNumber;
+            display.textContent = displayValue;
+            console.log(secondNumber);
+        };
+    }
+    else {
+        clearDisplay()
+        if (clearButton === ".") {
+            firstNumber += "0.";
+        }
+        else firstNumber += userInput;
+        console.log(firstNumber);
+        displayValue = firstNumber;
+        display.textContent = displayValue;
+    };
+    if (displayValue.includes(".")) {
+        disableFloatBtn();
+    }
+};
+
+calculatorContainer.addEventListener("click", (event) => {
+    let clickedButton = event.target;
+    if (clickedButton.matches(".btnO")) {
+        handleOperators(clickedButton.textContent);
+    }
+    else if (clickedButton.matches(".btnN")) {
+        handleNumbers(clickedButton.textContent);
+    }
+    else if (clickedButton.matches(".clearButton")) {
+        clearDisplay();
+    }
+    else if (clickedButton.matches(".resultButton")) {
+        giveResult();
+    }
+    else if (clickedButton.matches(".backspaceButton")) {
+        backspace();
+    };
+});
+
+document.addEventListener("keydown", (event) => {
+    let keyPressed = event.key.toLowerCase();
+    switch (keyPressed) {
+        case "c":
+            console.log(keyPressed);
+            clearDisplay();
+            break;
+        case "backspace":
+            if (result === "") {
+                console.log(keyPressed);
+                backspace();
+                break;
+            };
+        case "enter":
+            event.preventDefault();
+            console.log(keyPressed)
+            giveResult();
+            break;
+        default:
+            break;
+    };
+});

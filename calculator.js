@@ -3,17 +3,8 @@ let secondNumber = "";
 let operator = "";
 let result = "";
 let displayValue = "";
-
-
 const calculatorContainer = document.querySelector(".calculatorContainer");
-const numbersContainer = document.querySelector(".numbersContainer");
-const operatorsContainer = document.querySelector(".operatorsContainer");
-const otherBtnContainer = document.querySelector(".otherBtnContainer");
-const resultButton = document.querySelector(".result");
-const clearButton = document.querySelector(".clear");
-const backspaceButton = document.querySelector(".backspace");
 let display = document.querySelector(".display");
-
 
 function add(firstNumber, secondNumber) {
     return firstNumber + secondNumber;
@@ -29,7 +20,7 @@ function multiply(firstNumber, secondNumber) {
 
 function divide(firstNumber, secondNumber) {
     if (secondNumber === 0) {
-        return "ERROR"
+        return "error";
     }
     else return firstNumber / secondNumber;
 };
@@ -73,10 +64,10 @@ function backspace() {
         firstNumber = firstNumber.slice(0, firstNumber.length - 1);
         display.textContent = firstNumber
     };
-    enableFloatBtn()
+    enableFloatBtn();
 };
 
-// Resetta tutte le variabili svuotandole dei valori precedentemente inseriti
+// Resetta tutte le variabili
 function clearDisplay() {
     firstNumber = "";
     secondNumber = "";
@@ -84,7 +75,7 @@ function clearDisplay() {
     result = "";
     displayValue = "0";
     display.textContent = displayValue;
-    enableFloatBtn()
+    enableFloatBtn();
 };
 
 // Prende le variabili n1 n2 operator e chiama la funzione operate dandone il risulato
@@ -104,112 +95,111 @@ function giveResult() {
         operator = "";
         console.log(result);
     };
-    enableFloatBtn()
+    enableFloatBtn();
 };
 
-function prepareNewCalculation(e) {
+function prepareNewCalculation(newOperator) {
     firstNumber = result;
     secondNumber = "";
-    operator = e.target.textContent;
+    operator = newOperator;
     displayValue = operator;
     result = "";
 };
 
-// if result === "" chiede n1, operator e n2 // else clearDisplay  e poi inizia una nuova operazione
-function getNumbers(type, CssSelector) {
-    numbersContainer.addEventListener(type, e => {
-        if (result === "") {
-            if (e.target.matches(CssSelector) && operator === "") {
-                if (e.target.textContent === "." && firstNumber === "") {
-                    firstNumber += "0.";
-                }
-                else firstNumber += e.target.textContent;
-                displayValue = firstNumber;
-                display.textContent = displayValue;
-                console.log(firstNumber);
+function handleOperators(userInput) {
+    if (result !== "") {
+        prepareNewCalculation(userInput);
+        display.textContent = displayValue;
+        console.log(operator);
+    }
+    else if (secondNumber !== "") {
+        giveResult();
+        prepareNewCalculation(userInput);
+        console.log(operator);
+    }
+    else if (firstNumber !== "") {
+        operator = userInput;
+        displayValue = operator;
+        display.textContent = displayValue;
+        console.log(operator);
+    };
+    enableFloatBtn();
+};
 
+function handleNumbers(userInput) {
+    if (result === "") {
+        if (operator === "") {
+            if (userInput === "." && firstNumber === "") {
+                firstNumber += "0.";
             }
-            else if (e.target.matches(CssSelector) && operator !== "") {
-                if (e.target.textContent === "." && secondNumber === "") {
-                    secondNumber += "0.";
-                }
-                else secondNumber += e.target.textContent;
-                displayValue = secondNumber;
-                display.textContent = displayValue;
-                console.log(secondNumber);
-            };
-        }
-        else {
-            clearDisplay()
-            if (e.target.textContent === ".") {
-                firstNumber += 0 + e.target.textContent;
-            }
-            else firstNumber += e.target.textContent
-            console.log(firstNumber)
+            else firstNumber += userInput;
             displayValue = firstNumber;
             display.textContent = displayValue;
-        };
-
-        if (displayValue.includes(".")) {
-            disableFloatBtn()
+            console.log(firstNumber);
         }
-    });
-};
-
-
-function getOperators(type, CssSelector) {
-    operatorsContainer.addEventListener(type, e => {
-        if (e.target.matches(CssSelector)) {
-            if (result !== "") {
-                prepareNewCalculation(e);
-                display.textContent = displayValue;
-                console.log(operator);
+        else if (operator !== "") {
+            if (userInput === "." && secondNumber === "") {
+                secondNumber += "0.";
             }
-            else if (secondNumber !== "") {
-                giveResult();
-                prepareNewCalculation(e);
-                console.log(operator);
-            }
-            else if (firstNumber !== "") {
-                operator = e.target.textContent;
-                displayValue = operator;
-                display.textContent = displayValue;
-                console.log(operator);
-            };
+            else secondNumber += userInput;
+            displayValue = secondNumber;
+            display.textContent = displayValue;
+            console.log(secondNumber);
         };
-        enableFloatBtn()
-    });
+    }
+    else {
+        clearDisplay()
+        if (userInput === ".") {
+            firstNumber += "0.";
+        }
+        else firstNumber += userInput;
+        console.log(firstNumber);
+        displayValue = firstNumber;
+        display.textContent = displayValue;
+    };
+    if (displayValue.includes(".")) {
+        disableFloatBtn();
+    }
 };
+
+calculatorContainer.addEventListener("click", (event) => {
+    let clickedButton = event.target;
+    if (clickedButton.matches(".btnO")) {
+        handleOperators(clickedButton.textContent);
+    }
+    else if (clickedButton.matches(".btnN")) {
+        handleNumbers(clickedButton.textContent);
+    }
+    else if (clickedButton.matches(".clear")) {
+        clearDisplay();
+    }
+    else if (clickedButton.matches(".result")) {
+        giveResult();
+    }
+    else if (clickedButton.matches(".backspace")) {
+        backspace();
+    };
+});
 
 document.addEventListener("keydown", (event) => {
-    keyboard = event.key.toLowerCase()
-    switch (keyboard) {
+    let keyPressed = event.key.toLowerCase();
+    event.preventDefault();
+    switch (keyPressed) {
         case "c":
-            console.log(keyboard);
+            console.log(keyPressed);
             clearDisplay();
             break;
-
         case "backspace":
             if (result === "") {
-                console.log(keyboard);
+                console.log(keyPressed);
                 backspace();
                 break;
             };
-
         case "enter":
-            event.preventDefault();
-            console.log(keyboard)
+            console.log(keyPressed)
             giveResult();
             break;
-
         default:
             break;
     };
 });
-
-
-getOperators("click", ".btnO");
-getNumbers("click", ".btnN");
-clearButton.addEventListener("click", clearDisplay);
-resultButton.addEventListener("click", giveResult);
-backspaceButton.addEventListener("click", backspace);
