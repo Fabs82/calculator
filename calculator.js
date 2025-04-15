@@ -93,7 +93,6 @@ function giveResult() {
         };
         display.textContent = displayValue;
         operator = "";
-        console.log(result);
     };
     enableFloatBtn();
 };
@@ -110,18 +109,15 @@ function handleOperators(userInput) {
     if (result !== "") {
         prepareNewCalculation(userInput);
         display.textContent = displayValue;
-        console.log(operator);
     }
     else if (secondNumber !== "") {
         giveResult();
         prepareNewCalculation(userInput);
-        console.log(operator);
     }
     else if (firstNumber !== "") {
         operator = userInput;
         displayValue = operator;
         display.textContent = displayValue;
-        console.log(operator);
     };
     enableFloatBtn();
 };
@@ -135,7 +131,6 @@ function handleNumbers(userInput) {
             else firstNumber += userInput;
             displayValue = firstNumber;
             display.textContent = displayValue;
-            console.log(firstNumber);
         }
         else if (operator !== "") {
             if (userInput === "." && secondNumber === "") {
@@ -144,7 +139,6 @@ function handleNumbers(userInput) {
             else secondNumber += userInput;
             displayValue = secondNumber;
             display.textContent = displayValue;
-            console.log(secondNumber);
         };
     }
     else {
@@ -153,7 +147,6 @@ function handleNumbers(userInput) {
             firstNumber += "0.";
         }
         else firstNumber += userInput;
-        console.log(firstNumber);
         displayValue = firstNumber;
         display.textContent = displayValue;
     };
@@ -183,23 +176,23 @@ calculatorContainer.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
     let keyPressed = event.key.toLowerCase();
-    event.preventDefault();
-    switch (keyPressed) {
-        case "c":
-            console.log(keyPressed);
-            clearDisplay();
-            break;
-        case "backspace":
-            if (result === "") {
-                console.log(keyPressed);
-                backspace();
-                break;
-            };
-        case "enter":
-            console.log(keyPressed)
-            giveResult();
-            break;
-        default:
-            break;
-    };
+    const numbersList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
+    const operatorsList = ["+", "-", "*", "/", "**"];
+
+    if (numbersList.includes(keyPressed)) {
+        handleNumbers(keyPressed);
+    }
+    else if (operatorsList.includes(keyPressed)) {
+        handleOperators(keyPressed);
+    }
+    else if (keyPressed === "c") {
+        clearDisplay();
+    }
+    else if (keyPressed === "backspace") {
+        backspace();
+    }
+    else if (keyPressed === "enter") {
+        event.preventDefault();
+        giveResult();
+    }
 });
