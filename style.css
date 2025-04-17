@@ -24,6 +24,13 @@ button {
     padding-top: 17px;
     font-size: 1.2rem;
     text-align: end;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #216869;
+    box-shadow: 0 5px #7f7f7f;
+    transform: translateY(4px);
 }
 
 #float {
@@ -38,6 +45,12 @@ button {
     padding: 0;
 }
 
+.btnO:active {
+    background-color: #1d2d44;
+    box-shadow: 0 5px #7f7f7f;
+    transform: translateY(4px);
+}
+
 .mainContainer {
     width: 600px;
     height: 800px;
@@ -50,7 +63,7 @@ button {
 .display {
     background-color: #0f5257;
     width: 70%;
-    min-height: 7%;
+    min-height: 10%;
     padding: 10px 20px;
     text-align: right;
     font-size: 2.5rem;
@@ -101,4 +114,8 @@ button {
     background-color: #ffc300;
     text-align: center;
     padding: 0;
+}
+
+.otherBtnContainer .btn:active {
+    background-color: #ffcd00;
 }
