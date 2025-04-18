@@ -56,7 +56,10 @@ function enableFloatBtn() {
 
 // Function backspace --> quando viene clickato backspace l'ultimo input nel displaValue viene cancellato
 function backspace() {
-    if (secondNumber !== "") {
+    if (result !== "") {
+        document.querySelector(".backspace").disabled = true
+    }
+    else if (secondNumber !== "") {
         secondNumber = secondNumber.slice(0, secondNumber.length - 1);
         display.textContent = secondNumber;
     }
@@ -95,6 +98,7 @@ function giveResult() {
         operator = "";
     };
     enableFloatBtn();
+    document.querySelector(".backspace").disabled = false
 };
 
 function prepareNewCalculation(newOperator) {
@@ -178,7 +182,6 @@ document.addEventListener("keydown", (event) => {
     let keyPressed = event.key.toLowerCase();
     const numbersList = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
     const operatorsList = ["+", "-", "*", "/", "**"];
-
     if (numbersList.includes(keyPressed)) {
         handleNumbers(keyPressed);
     }
@@ -194,6 +197,5 @@ document.addEventListener("keydown", (event) => {
     else if (keyPressed === "enter") {
         event.preventDefault();
         giveResult();
-    }
-
+    };
 });
